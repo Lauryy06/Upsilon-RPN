@@ -10,6 +10,7 @@ ContentView::ContentView(Responder * parentResponder, InputController * inputCon
   m_inputView(parentResponder, m_textBuffer, sizeof(m_textBuffer), sizeof(m_textBuffer), inputController, inputController, KDFont::LargeFont, 0.0f, 0.5f, Palette::PrimaryText, Palette::ExpressionInputBackground),
   m_textBuffer("")
 {
+  m_stackView.setVerticalCellOverlap(0);
 }
 
 ContentView::~ContentView() {
