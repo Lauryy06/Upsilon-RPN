@@ -33,6 +33,8 @@ private:
     Element();
     Element(Poincare::Expression &exp, Poincare::Context &context);
 
+    bool isInitialized() const { return !(expression[0] != '\0' && approximate[0] != '\0'); }
+
     char expression[k_expressionSize];
     char approximate[k_expressionSize];
     KDCoordinate expressionHeight;

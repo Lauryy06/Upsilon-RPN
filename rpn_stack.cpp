@@ -19,6 +19,13 @@ Stack::Element::Element() : expression("0"), approximate("0"), expressionHeight(
 
 Stack::Element::Element(Expression &exp, Context &context) {
   Shared::PoincareHelpers::Simplify(&exp, &context, ExpressionNode::ReductionTarget::User);
+
+  if (exp.isUninitialized()) {
+    expression[0] = '\0';
+    approximate[0] = '\0';
+    return;
+  }
+
   exp.serialize(expression, k_expressionSize);
   if (find_subbytes((const byte*)expression, strlen(expression), (const byte*)"undef", strlen("undef"), 1) != nullptr) {
     // Expression got too large, need to approximate.
@@ -284,7 +291,12 @@ I18n::Message Stack::doOperation(Expression e, Context &context, int nargs) {
 
 I18n::Message Stack::push(Expression e, Context &context) {
   Element a(e, context);
-  return push(std::move(a));
+
+  if (!a.isInitialized()) {
+    return push(std::move(a));
+  } else {
+    return I18n::Message::StorageMemoryFull1;
+  }
 }
 
 I18n::Message Stack::push(Element e) {
